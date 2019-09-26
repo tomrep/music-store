@@ -1,0 +1,5 @@
+src/**/*.spec.js
+src/**/*.test.js
+coverage
+.gitignore
+build

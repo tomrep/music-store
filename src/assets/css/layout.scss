@@ -1,0 +1,46 @@
+.header {
+  color: #ffffff;
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  &-brand {
+    font-size: 20px;
+    height: 64px;
+  }
+
+  &-icon {
+    height: 50%;
+    position: relative;
+    top: 25%;
+    display: block;
+    float: left;
+    margin-right: 0.5rem;
+  }
+
+  &-input {
+    font-size: 20px;
+    line-height: 150%;
+    width: 100%;
+    color: black;
+  }
+
+  .ant-input-group-wrapper {
+    vertical-align: middle;
+  }
+}
+
+.container {
+  width: 700px;
+  margin: 0 auto;
+
+  &--left {
+    margin: 0;
+  }
+}
+
+.layout-height {
+  min-height: calc(100vh - 60px);
+}
