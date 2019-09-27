@@ -3,7 +3,7 @@ import { types } from 'mobx-state-tree';
 import { movieStoreActions } from './movies.actions';
 import { movieStoreViews } from './movies.views';
 
-const Rating = types.model('Ratong', {
+const Rating = types.model('Rating', {
   source: types.maybe(types.string),
   value: types.maybe(types.string)
 });
@@ -23,16 +23,15 @@ const Movie = types.model('Movie', {
   language: types.maybe(types.string),
   country: types.maybe(types.string),
   awards: types.maybe(types.string),
-  ratings: types.maybe(Rating)
+  ratings: types.optional(types.array(Rating), [])
 });
 
-const MovieStore = types
+export const MovieStore = types
   .model('MovieStore', {
     movies: types.optional(types.array(Movie), []),
+    moviesCount: types.optional(types.number, 0),
     movie: types.optional(Movie, {}),
     favorites: types.optional(types.array(Movie), [])
   })
   .actions(movieStoreActions)
   .views(movieStoreViews);
-
-export default MovieStore;

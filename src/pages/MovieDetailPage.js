@@ -1,11 +1,18 @@
 import React from 'react';
 
-const MovieDetailPage = () => {
+import PropTypes from 'prop-types';
+import MovieDetail from '../components/movie/MovieDetail';
+
+const MovieDetailPage = ({ match }) => {
   return (
     <div>
-      <h1>DETAIL PAGE</h1>
+      <MovieDetail id={match.params.id} />
     </div>
   );
+};
+
+MovieDetailPage.propTypes = {
+  match: PropTypes.object.isRequired
 };
 
 export default MovieDetailPage;

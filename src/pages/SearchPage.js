@@ -1,42 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'antd';
 import { observer, inject } from 'mobx-react';
 
 import SearchInput from '../components/search/Search';
+import MoviesTable from '../components/movie/MoviesTable';
 
-const SearchPage = ({ allMovies, getAllMoviesByName }) => {
+const SearchPage = ({ getAllMoviesByName }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [movieName, setMovieName] = useState('');
+
+  useEffect(() => {
+    const getMovies = async () => {
+      if (movieName !== '')
+        getAllMoviesByName(movieName.toLowerCase(), currentPage);
+    };
+    getMovies();
+  }, [movieName, currentPage, getAllMoviesByName]);
+
   const searchMovies = async name => {
-    console.log('this is hapenning');
-    await getAllMoviesByName(name.toLowerCase());
+    setMovieName(name);
+  };
+  const handlePageChange = page => {
+    setCurrentPage(page);
   };
 
-  console.log(allMovies);
-
-  const results = allMovies.map(movie => <Card>{movie.id}</Card>);
   return (
     <div className="container">
       <SearchInput handleSearch={searchMovies} />
-      {results}
+      <MoviesTable
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 };
 
 SearchPage.propTypes = {
-  allMovies: PropTypes.array,
   getAllMoviesByName: PropTypes.func
 };
 
 SearchPage.defaultProps = {
-  allMovies: [],
   getAllMoviesByName: () => null
 };
-const mapStoreToProps = movies => {
-  console.log(movies);
-  return {
-    allMovies: movies.allMovies,
-    getAllMoviesByName: movies.getAllMoviesByName
-  };
-};
+const mapStoreToProps = ({ movies }) => ({
+  getAllMoviesByName: movies.getAllMoviesByName
+});
 
 export default inject(mapStoreToProps)(observer(SearchPage));

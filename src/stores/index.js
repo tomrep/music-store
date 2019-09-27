@@ -1,15 +1,14 @@
-// import { types } from 'mobx-state-tree';
-import MovieStore from './movies/movies.store';
+import { types } from 'mobx-state-tree';
+import { MovieStore } from './movies/movies.store';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let store;
 
 export function createStore() {
-  return MovieStore.create();
-  // const RootStore = types.model('RootStore', {
-  //   movies: MovieStore
-  // });
+  const RootStore = types.model('RootStore', {
+    movies: types.optional(MovieStore, {})
+  });
 
-  // store = RootStore.create();
-  // return store;
+  store = RootStore.create();
+  return store;
 }

@@ -8,7 +8,6 @@ const SearchInput = ({ handleSearch }) => {
 
   const handleSearchPress = async () => {
     await handleSearch(name);
-    setName('');
   };
 
   const handleTyping = ({ target }) => setName(target.value);

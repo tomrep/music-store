@@ -1,17 +1,17 @@
-import { flow } from 'mobx-state-tree';
+import { flow, getSnapshot } from 'mobx-state-tree';
 
 import { getMoviesByName, getMovieById } from '../../utils/loader.utils';
 
 export const movieStoreActions = self => ({
-  getAllMoviesByName: flow(function*(name) {
-    console.log('ins action');
-    const allMovies = yield getMoviesByName(name);
+  getAllMoviesByName: flow(function*(name, page) {
+    const allMovies = yield getMoviesByName(name, page);
 
-    self.movies = allMovies.map(movie => ({
+    self.movies = allMovies.Search.map(movie => ({
       id: movie.imdbID,
       title: movie.Title,
       year: movie.Year
     }));
+    self.moviesCount = parseInt(allMovies.totalResults, 10);
   }),
   getMovieById: flow(function*(id) {
     const movie = yield getMovieById(id);
@@ -30,15 +30,14 @@ export const movieStoreActions = self => ({
       language: movie.Language,
       country: movie.Country,
       awards: movie.Awards,
-      ratings: movie.ratings.map(rating => ({
+      ratings: movie.Ratings.map(rating => ({
         source: rating.Source,
         value: rating.Value
       }))
     };
   }),
-  addFavorite: id => {
-    const newFavorite = self.movies.find(movie => movie.id === id);
-    self.favorites = [...self.favorites, newFavorite];
+  addFavorite: movie => {
+    self.favorites = [...self.favorites, getSnapshot(movie)];
   },
   deleteFavorite: id => {
     self.favorites = self.favorites.filter(movie => movie.id !== id);
