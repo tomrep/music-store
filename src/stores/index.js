@@ -10,5 +10,6 @@ export function createStore() {
   });
 
   store = RootStore.create();
+  store.movies.initFavorites();
   return store;
 }

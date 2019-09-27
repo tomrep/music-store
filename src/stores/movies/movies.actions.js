@@ -1,4 +1,4 @@
-import { flow, getSnapshot } from 'mobx-state-tree';
+import { flow, getSnapshot, applySnapshot } from 'mobx-state-tree';
 
 import { getMoviesByName, getMovieById } from '../../utils/loader.utils';
 
@@ -38,8 +38,20 @@ export const movieStoreActions = self => ({
   }),
   addFavorite: movie => {
     self.favorites = [...self.favorites, getSnapshot(movie)];
+    localStorage.setItem(
+      'favorites',
+      JSON.stringify(getSnapshot(self.favorites))
+    );
   },
   deleteFavorite: id => {
     self.favorites = self.favorites.filter(movie => movie.id !== id);
+    localStorage.setItem(
+      'favorites',
+      JSON.stringify(getSnapshot(self.favorites))
+    );
+  },
+  initFavorites: () => {
+    const favorites = localStorage.getItem('favorites');
+    applySnapshot(self.favorites, JSON.parse(favorites || []));
   }
 });
